@@ -9,6 +9,7 @@ date: June 9 2026
 
 # Set up
 ```{r}
+#| message: false
 #| label: Set up
 
 # reading in packages
@@ -61,9 +62,20 @@ slice_sample(nests_clean, n = 10)
 
 ## b. Response variable
 
+For the response variable, case_control, the 1's signify there is a nest, of any bird species, present, while a 0 signifies there is no nest present. 
+
 ## c. Purpose of study
 
+Tree height: Tree height is a continuous variable. As tree height increases, the probability of a nest occurrence would increase because of increased distance between nests and browsing mammals.
+
+Acacia ant species: Acacia ant species is a categorical variable. 
+
 ## d. Table of models
+| Model number | Tree Height | Ant Species | Interaction | 
+|--------------|:-----------:|:-----------:|:-----------:| 
+| 1            |      X      |      X      |     X       | 
+| 2            |      X      |      X      |             |
+
 
 ## e. Run the models
 
