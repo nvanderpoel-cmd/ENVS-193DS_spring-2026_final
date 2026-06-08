@@ -17,7 +17,7 @@ library(tidyverse)
 library(janitor)
 library(dplyr)
 
-?# reading in data
+# reading in data
 nests <- read.csv(here("data/nest_data_final.csv"))
 
 ```
@@ -55,7 +55,7 @@ nests_clean <- nests |>
     "BBR" ~ "Crematogaster nigriceps"
   ))
 
-slice_sample(n = 10)
+slice_sample(nests_clean, n = 10)
 ```
 
 
