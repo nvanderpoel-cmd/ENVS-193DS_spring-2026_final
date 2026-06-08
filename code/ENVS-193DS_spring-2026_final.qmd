@@ -7,6 +7,21 @@ date: June 9 2026
 
 [Github Repo] (https://github.com/nvanderpoel-cmd/ENVS-193DS_spring-2026_final)
 
+# Set up
+```{r}
+#| label: Set up
+
+# reading in packages
+library(here)
+library(tidyverse)
+library(janitor)
+library(dplyr)
+
+?# reading in data
+nests <- read.csv(here("data/nest_data_final.csv"))
+
+```
+
 # Problem 1. Research Writing
 
 ## a. Transparent statistical methods
@@ -18,6 +33,31 @@ date: June 9 2026
 # Problem 2. Data analysis
 
 ## a. Clean and wrangle
+```{r}
+#| label: clean and wrangle
+
+# new object nests_clean
+nests_clean <- nests |> 
+  select(height_cm, case_control, ant_species) |> 
+  filter(ant_species %in% c(
+                     "AB",
+                   "RRB",
+                   "BBR")) |> 
+  mutate(ant_species = as_factor(ant_species),
+         ant_species = fct_relevel(ant_species,
+                                    "AB",
+                                    "RRB",
+                                    "BBR")) |> 
+  mutate(species_name = case_match(
+    ant_species,
+    "AB" ~ "Crematogaster sjostedti",
+    "RRB" ~ "Crematogaster mimosae",
+    "BBR" ~ "Crematogaster nigriceps"
+  ))
+
+slice_sample(n = 10)
+```
+
 
 ## b. Response variable
 
