@@ -17,6 +17,10 @@ library(here)
 library(tidyverse)
 library(janitor)
 library(dplyr)
+library(MuMIn)
+library(DHARMa)
+library(ggeffects)
+library(ggplot2)
 
 # reading in data
 nests <- read.csv(here("data/nest_data_final.csv"))
@@ -76,14 +80,74 @@ Acacia ant species: Acacia ant species is a categorical variable.
 | 1            |      X      |      X      |     X       | 
 | 2            |      X      |      X      |             |
 
-
 ## e. Run the models
+
+```{r}
+#| message: false
+#| label: running models
+
+# model 1: Model with interaction term
+
+model1 <- glm(case_control ~ height_cm * ant_species,
+              data = nests_clean,
+              family = "binomial"
+              )
+
+# model 2: Model without interaction term
+
+model2 <- glm(case_control ~ height_cm + ant_species,
+              data = nests_clean,
+              family = "binomial"
+              )
+
+```
+
 
 ## f. Select the best model
 
+```{r}
+#| label: model-selection
+
+AICc(
+model1,
+model2
+) |> 
+arrange(AICc)
+```
+
+The best model as determined by Akaike's Information Criterion (AIC) was model 1, with interaction.
+
 ## g. Check the diagnostics
 
+```{r}
+#| label: check diagnostics
+
+plot(
+  simulateResiduals(model1)
+)
+```
+
 ## h. Visualize the model predictions
+
+```{r}
+#| label: model predictions
+
+ggplot(nests_clean, aes(x = height_cm, y = case_control, color = species_name)) +
+  geom_point(alpha = 0.3) +
+  stat_smooth(method = "glm",
+              method.args = list(family = "binomial"),
+              se = TRUE) +
+  facet_wrap(~species_name) +
+  labs(
+    x = "Tree height (cm)",
+    y = "Probability of nest occurrence",
+    color = "Ant species"
+  ) +
+  theme(legend.position = "none",
+        panel.background = element_blank
+        )
+```
+
 
 ## i. Write a caption for your figure
 
