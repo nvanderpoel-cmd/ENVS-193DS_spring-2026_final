@@ -319,7 +319,7 @@ I found a weak negative relationship between amount of sleep and coffee consumed
 
 ## g. Sharing your affective visualization
 
-![]("affective_visualization1.jpg")
+![]("affective_visualization1.jpg"){style="width: 500px; height: 800px; object-fit: cover;"}
 
 
 
