@@ -121,6 +121,8 @@ The best model as determined by Akaike's Information Criterion (AIC) was model 1
 
 ```{r}
 #| label: check diagnostics
+#| fig-height: 6
+#| fig-width: 10
 
 plot(
   simulateResiduals(model1)
@@ -191,7 +193,8 @@ ggplot(nests_clean,
         panel.background = element_blank(), # removing grey background
         panel.grid.major = element_blank() # removing grid lines
         ) +
-  labs(x = "Tree height (cm)",
+ # labelling axes
+   labs(x = "Tree height (cm)",
        y = "Probability of nest occurrence")
 
 ```
@@ -221,7 +224,11 @@ Furthermore, at a tree height of 600 cm, the probability of nest occurrence is 0
 
 ## a. Comparing visualizations
 
+There are many differences but a large difference is the amount of observations and data points, also of course they are displayed very differently. The affective visualization is a lot more artistic and its hard to tell it is data at first. Both graphs converge however in showing the low amount of caffeine consumed the more sleep in hours was had. Nevertheless, the patterns differ somewhat between the two. The graph from homework 02 did not have any distinct patterns and looked relatively random although there were a couple points that showed a pattern of negative correlation starting to emerge. The affective visualization had a much more prominent decrease and much more data to go off of. From week 9, I received mostly suggestions about coloring and incorporated these through watercolor for my final product. 
+
 ## b. Designing an analysis
+
+Pearsons - measure strength of correlation between hours of sleep and ounces of caffeine consumed
 
 ## c. Check any assumptions and run your analysis
 
