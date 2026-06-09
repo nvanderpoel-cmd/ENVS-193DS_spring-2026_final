@@ -21,9 +21,11 @@ library(MuMIn)
 library(DHARMa)
 library(ggeffects)
 library(ggplot2)
+library(readxl)
 
 # reading in data
 nests <- read.csv(here("data/nest_data_final.csv"))
+my_data <- read_xlsx(here("data/my_data.xlsx"))
 
 ```
 
@@ -228,17 +230,96 @@ There are many differences but a large difference is the amount of observations 
 
 ## b. Designing an analysis
 
-Pearsons - measure strength of correlation between hours of sleep and ounces of caffeine consumed
+A Pearson's correlation could be applied to answer the research question: How does the amount of sleep in hours influence the amount of coffee consumed in ounces per day? Here, a Pearson's correlation is appropriate because it uses parametric tests measuring the mean, there are no significant outliers in the data, and the research question asks for the strength of correlation or how strongly the predictor influences the response variable.
 
 ## c. Check any assumptions and run your analysis
 
+### Checking assumptions
+```{r}
+#| label: checking assumptions
+#| fig-height: 6
+#| fig-width: 8
+
+my_data_clean <- clean_names(my_data) 
+
+# creating new object
+# linear regression model of my data
+# (response ~ predictor)
+my_data_lm <- lm( coffee_oz ~ amount_of_sleep,
+    data = my_data_clean
+    )
+#displaying linear model
+# putting side by side
+par(mfrow = c(2,2)) 
+# plotting linear model
+plot(my_data_lm)
+
+```
+
+### Running Pearson's Correlation
+```{r}
+#| label: Pearsons test for my data
+
+# running pearsons coefficient
+# data$predictor, data$response
+cor.test(my_data_clean$amount_of_sleep, my_data_clean$coffee_oz,
+         method = "pearson")
+
+```
+
 ## d. Create a visualization
+
+```{r}
+# creating new object, my_data_preds
+my_data_preds<- ggpredict(my_data_lm,
+                         terms = "amount_of_sleep")
+# base layer ggplot
+# x = amount of sleep
+# y = coffee consumed 
+ggplot(my_data_clean,
+       aes(x = amount_of_sleep,
+           y = coffee_oz)) +
+  # adding my data in points
+  geom_point(color = "seagreen") +
+  # adding confidence interval ribbon
+  geom_ribbon(data = my_data_preds,
+              aes(x = x,
+                  y = predicted,
+                  ymin = conf.low,
+                  ymax = conf.high),
+              # ribbon color
+              fill = "khaki3",
+              alpha = 0.4) +
+  # adding fitted linear model
+  geom_line(data = my_data_preds,
+            aes( x = x,
+                 y = predicted),
+            # line color
+            color = "brown4") +
+  # labelling axes and title
+  labs(
+    x = "Amount of sleep (hours)",
+    y = "Coffee consumed (oz)",
+    title = "As amount of sleep increases, coffee consumption decreases"
+  ) +
+  # changing theme from default
+  theme_classic() +
+  # getting rid of legend
+  theme(legend.position = "none")
+
+```
 
 ## e. Write a caption
 
+**Figure 2: As amount of sleep increases, coffee consumption decreases.** Data my_data.xlsx (van der Poel, 2026). Line represents fitted line or linear model, demonstrating relationship between amount of sleep (hours) and coffee consumed (oz) (total n = 37). Meanwhile, points represent actual observations of coffee consumed on a given day given a certain amount of sleep. The amount of coffee consumed decreases as amount of sleep increases. Ribbon represents a 95% confidence interval. Colors represent different graph elements (brown: fitted line, seagreen: observations, khaki: confidence interval ribbon).
+
 ## f. Write about your results
 
+I found a weak negative relationship between amount of sleep and coffee consumed (Pearson's r = 0.32, t(35) = -2.0, p = 0.055, $\alpha$ = 0.05).
+
 ## g. Sharing your affective visualization
+
+![]("affective_visualization1.jpg")
 
 
 
