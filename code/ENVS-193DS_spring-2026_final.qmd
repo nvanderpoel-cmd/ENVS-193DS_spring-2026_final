@@ -43,7 +43,7 @@ nests <- read.csv(here("data/nest_data_final.csv"))
 
 # new object nests_clean
 nests_clean <- nests |> 
-  select(height_cm, case_control, ant_species) |> 
+  select(height_cm, case_control, ant_species) |>  
   filter(ant_species %in% c(
                      "AB",
                    "RRB",
@@ -58,7 +58,7 @@ nests_clean <- nests |>
     "AB" ~ "Crematogaster sjostedti",
     "RRB" ~ "Crematogaster mimosae",
     "BBR" ~ "Crematogaster nigriceps"
-  ))
+  )) 
 
 slice_sample(nests_clean, n = 10)
 ```
@@ -125,35 +125,97 @@ The best model as determined by Akaike's Information Criterion (AIC) was model 1
 plot(
   simulateResiduals(model1)
 )
+
 ```
 
 ## h. Visualize the model predictions
 
 ```{r}
-#| label: model predictions
+#| label: Visualizing model predictions 1
 
-ggplot(nests_clean, aes(x = height_cm, y = case_control, color = species_name)) +
-  geom_point(alpha = 0.3) +
-  stat_smooth(method = "glm",
-              method.args = list(family = "binomial"),
-              se = TRUE) +
-  facet_wrap(~species_name) +
-  labs(
-    x = "Tree height (cm)",
-    y = "Probability of nest occurrence",
-    color = "Ant species"
-  ) +
+# creating new object mod_preds
+mod_preds <- ggpredict(model1,
+                       #adding predictor variables
+                       terms = c("height_cm",
+                                 "ant_species")) |>
+  #renaming group column ant_species
+  dplyr::rename(ant_species = group)
+
+
+#ggplot base
+# x = height, y = nest occurrence, categorized by ant species
+ggplot(nests_clean,
+       aes( x = height_cm,
+            y = case_control)) +
+  # adding points representing observations
+  geom_point(aes(color = ant_species),
+             shape = 21) +
+  # adding confidence level ribbon based on mod_preds
+  geom_ribbon(data = mod_preds,
+              aes(x = x,
+                  y = predicted,
+                  ymin = conf.low,
+                  ymax = conf.high,
+                  fill = ant_species,
+              alpha = 0.1)) +
+  # adding prediction line
+  geom_line(data = mod_preds,
+            aes( x = x,
+                 y = predicted,
+                 color = ant_species)) +
+  # creating different panels
+  # labelling by full name instead of abbreviations
+  facet_wrap(~ant_species,
+             labeller = labeller(
+               ant_species = c(AB = "Crematogaster sjostedti",
+                               RRB = "Crematogaster mimosae",
+                               BBR = "Crematogaster nigriceps"))) +
+  #custom colors
+  scale_color_manual(values = c(
+    "AB" = "skyblue",
+    "RRB" = "turquoise4",
+    "BBR" = "khaki3"
+  )) +
+  # matching ribbon colors
+  scale_fill_manual(values = c(
+  "AB" = "skyblue",
+  "RRB" = "turquoise4",
+  "BBR" = "khaki3"
+)) +
+  # adding x range
+  # adding line breaks
+  scale_x_continuous(limits = c(50, 600),
+                     breaks = c(200, 400, 600)) +
+  # getting rid of legend
   theme(legend.position = "none",
-        panel.background = element_blank
-        )
-```
+        panel.background = element_blank(), # removing grey background
+        panel.grid.major = element_blank() # removing grid lines
+        ) +
+  labs(x = "Tree height (cm)",
+       y = "Probability of nest occurrence")
 
+```
 
 ## i. Write a caption for your figure
 
+**Figure 1: As height increases, the probability of bird nest occurrence increases with each acacia ant species.** Data from nest_data_final.csv (Lujan E.et al, Zenodo, 2023). Lines represent predictions of probability of nest occurrence (lbs) given acacia species; Crematogaster sjostedti (AB), Crematogaster mimosae (RRB), Crematogaster nigriceps (BBR), (total n = 270) and tree height in cm. Meanwhile, points represent actual observations of if a nest occurred or not(0 = nest not present, 1 = nest present). The probability of nest occurrence increases as tree height increases. Nevertheless, the probability increases at different rates with each ant species, where Crematogaster sjostedti has the most gradual increase in probability followed by Crematogaster mimosae and Crematogaster nigriceps. Ribbons represent a 95% confidence interval. Colors represent acacia ant species (skyblue: Crematogaster sjostedti, teal: Crematogaster mimosae, khaki: Crematogaster nigriceps).
+
 ## j. Calculate model predictions
 
+```{r}
+#| label: calculate model predictions
+
+ggpredict(model1,
+          terms = c("height_cm [600]",
+                    "ant_species"))
+
+```
+
 ## k. Interpret your results
+
+Acacia ant species and tree height (cm) interact to predict the probability of nest occurrence. As tree height increases, probability of nest occurrence increases.
+
+Furthermore, at a tree height of 600 cm, the probability of nest occurrence is 0.20 for Crematogaster sjostedti (95% CI: [0.00, 0.99]), 0.74 for Crematogaster mimosae (95% CI: [0.48, 0.90]), and 1.00 for Crematogaster nigriceps (95% CI: [1.00, 1.00]). Indicating higher probability of nest occurrence for Crematogaster nigriceps at the highest tree height measured, 600 cm. 
 
 # Problem 3. Affective and exploratory visualizations
 
