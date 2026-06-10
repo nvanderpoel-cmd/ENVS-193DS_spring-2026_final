@@ -267,7 +267,7 @@ There are many differences but a large difference is the amount of observations 
 
 ## b. Designing an analysis
 
-A Pearson's correlation could be applied to answer the research question: How does the amount of sleep in hours influence the amount of coffee consumed in ounces per day? Here, a Pearson's correlation is appropriate because it uses parametric tests measuring the mean, there are no significant outliers in the data, and the research question asks for the strength of correlation or how strongly the predictor influences the response variable.
+A Pearson's correlation could be applied to answer the research question: How does the amount of sleep in hours influence the amount of coffee consumed in ounces per day? Here, a Pearson's correlation is appropriate because it uses parametric tests, the variables are continuous and observations are independent. Additionally, the research question asks for the strength of correlation or how strongly the predictor influences the response variable making Pearson's correlation an appropriate test.
 
 ## c. Check any assumptions and run your analysis
 
