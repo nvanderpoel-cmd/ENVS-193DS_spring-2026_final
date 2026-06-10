@@ -9,8 +9,7 @@ Repo for ENVS 193DS Spring 2026 Final Project, by Niki van der Poel.
 
 Includes data (csv) and metadata for nest occurrence (Lujan E. et al. 2023), and personal data collected on sleep and coffee consumption (xlsx). 
 
-What code is there, and what does it do?
-Code includes qmd and rendered pdf of final, which includes research writing, data analysis, and affective and exploratory visualization.
+Code includes qmd and rendered pdf of final, which includes research writing, data analysis, and affective and exploratory visualization, which predict values based on logistic regression and visualize correlation.
 
 ## Rendered output
 
