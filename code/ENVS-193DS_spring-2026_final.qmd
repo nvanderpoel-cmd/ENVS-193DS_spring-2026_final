@@ -5,7 +5,7 @@ format: pdf
 date: June 9 2026
 ---
 
-[Github Repo] (https://github.com/nvanderpoel-cmd/ENVS-193DS_spring-2026_final)
+[Github Repo](https://github.com/nvanderpoel-cmd/ENVS-193DS_spring-2026_final)
 
 # Set up
 ```{r}
@@ -55,16 +55,21 @@ One additional variable that could influence the probability of American Avocet 
 
 # new object nests_clean
 nests_clean <- nests |> 
+  # keeping only 3 variables
+  # variables: tree height, nest occurrence, and ant species
   select(height_cm, case_control, ant_species) |>  
+  # only including ant species AB, RRB, and BBR
   filter(ant_species %in% c(
                      "AB",
                    "RRB",
                    "BBR")) |> 
+  # reordering ant species (AB,RRB, BBR)
   mutate(ant_species = as_factor(ant_species),
          ant_species = fct_relevel(ant_species,
                                     "AB",
                                     "RRB",
                                     "BBR")) |> 
+  # creating new row with full species names
   mutate(species_name = case_match(
     ant_species,
     "AB" ~ "Crematogaster sjostedti",
@@ -72,6 +77,7 @@ nests_clean <- nests |>
     "BBR" ~ "Crematogaster nigriceps"
   )) 
 
+# displaying random ten rows of data
 slice_sample(nests_clean, n = 10)
 ```
 
@@ -101,15 +107,21 @@ Acacia ant species: Acacia ant species is a categorical variable. Here, C. mimos
 
 # model 1: Model with interaction term
 
+# creating new object model1 - interaction term
+# response ~ predictor * predictor
 model1 <- glm(case_control ~ height_cm * ant_species,
               data = nests_clean,
+              # binomial/logistic regression
               family = "binomial"
               )
 
 # model 2: Model without interaction term
 
+# creating new object model2 - no interaction term
+# response ~ predictor + predictor
 model2 <- glm(case_control ~ height_cm + ant_species,
               data = nests_clean,
+              # binomial/logistic regression
               family = "binomial"
               )
 
@@ -121,11 +133,15 @@ model2 <- glm(case_control ~ height_cm + ant_species,
 ```{r}
 #| label: model-selection
 
+# AKaike's Information Criterion
+# listing models
 AICc(
 model1,
 model2
 ) |> 
-arrange(AICc)
+# asking to order/display rank of models
+  arrange(AICc)
+
 ```
 
 The best model as determined by Akaike's Information Criterion (AIC) was model 1, with interaction.
@@ -137,6 +153,7 @@ The best model as determined by Akaike's Information Criterion (AIC) was model 1
 #| fig-height: 6
 #| fig-width: 10
 
+# Displaying diagnostics for model of best fit (model1)
 plot(
   simulateResiduals(model1)
 )
@@ -221,6 +238,7 @@ ggplot(nests_clean,
 ```{r}
 #| label: calculate model predictions
 
+# predicting nest occurence probability at 600 cm
 ggpredict(model1,
           terms = c("height_cm [600]",
                     "ant_species"))
@@ -253,6 +271,8 @@ A Pearson's correlation could be applied to answer the research question: How do
 #| fig-height: 6
 #| fig-width: 8
 
+# new object, my_data clean
+# cleaning my_data
 my_data_clean <- clean_names(my_data) 
 
 # creating new object
@@ -261,6 +281,7 @@ my_data_clean <- clean_names(my_data)
 my_data_lm <- lm( coffee_oz ~ amount_of_sleep,
     data = my_data_clean
     )
+
 #displaying linear model
 # putting side by side
 par(mfrow = c(2,2)) 
