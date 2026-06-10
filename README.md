@@ -13,7 +13,7 @@ Code includes qmd and rendered pdf of final, which includes research writing, da
 
 ## Rendered output
 
-[link to rendered final](file:///Users/nikivanderpoel/Downloads/ENVS-193DS_spring-2026_final%20(1).pdf)
+[link to rendered final](https://github.com/nvanderpoel-cmd/ENVS-193DS_spring-2026_final/raw/main/code/ENVS-193DS_spring-2026_final.pdf)
 
 
 
