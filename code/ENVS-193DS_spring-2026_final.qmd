@@ -272,29 +272,24 @@ A Pearson's correlation could be applied to answer the research question: How do
 ## c. Check any assumptions and run your analysis
 
 ### Checking assumptions
-```{r}
-#| label: checking assumptions
-#| fig-height: 6
-#| fig-width: 8
 
+```{r}
 # new object, my_data clean
 # cleaning my_data
 my_data_clean <- clean_names(my_data) 
 
-# creating new object
-# linear regression model of my data
-# (response ~ predictor)
-my_data_lm <- lm( coffee_oz ~ amount_of_sleep,
-    data = my_data_clean
-    )
-
-#displaying linear model
-# putting side by side
-par(mfrow = c(2,2)) 
-# plotting linear model
-plot(my_data_lm)
+# QQ plot to check assumptions
+#base layer: my_data_clean
+ggplot(data = my_data_clean,
+       #y axis: amount of sleep
+       mapping = aes(sample = amount_of_sleep)) +
+  #first layer: reference for qq plot
+  geom_qq_line(color = "seagreen") +
+  #second layer: points representing sample quantiles
+  geom_qq() 
 
 ```
+
 
 ### Running Pearson's Correlation
 ```{r}
@@ -310,6 +305,13 @@ cor.test(my_data_clean$amount_of_sleep, my_data_clean$coffee_oz,
 ## d. Create a visualization
 
 ```{r}
+# creating new object
+# linear regression model of my data
+# (response ~ predictor)
+my_data_lm <- lm( coffee_oz ~ amount_of_sleep,
+    data = my_data_clean
+    )
+
 # creating new object, my_data_preds
 my_data_preds<- ggpredict(my_data_lm,
                          terms = "amount_of_sleep")
