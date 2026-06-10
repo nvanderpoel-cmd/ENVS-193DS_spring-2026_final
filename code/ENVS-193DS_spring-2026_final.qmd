@@ -33,9 +33,19 @@ my_data <- read_xlsx(here("data/my_data.xlsx"))
 
 ## a. Transparent statistical methods
 
+In part 1, they used a logistic regression because they are calculating a prediction or probability of how one variable effects the other, and the response variable, American Avocet microhabitat use, is a binary variable.
+
+In part 2, they used a Chi square test because both predictor and response variables are categorical. 
+
 ## b. Suggestions for rewriting
 
+Part 1: American Avocet microhabitat use depends on distance to water edge. 
+
+Part 2: Recorded bird species (American Avocet, Forster’s Tern, Black-necked Stilt), differ significantly based on habitat type(managed pond, non-tidal marsh, salt pond, tidal marsh, or tidal mudflat).  
+
 ## c. Further analysis
+
+One additional variable that could influence the probability of American Avocet microhabitat use is which is proximity to island nesting sites (m) because islands are important waterbirds for nesting and breeding as shown in several studies (Schacter C. et al. 2023 introduction paragraph 2 page 3).
 
 # Problem 2. Data analysis
 
@@ -72,11 +82,12 @@ For the response variable, case_control, the 1's signify there is a nest, of any
 
 ## c. Purpose of study
 
-Tree height: Tree height is a continuous variable. As tree height increases, the probability of a nest occurrence would increase because of increased distance between nests and browsing mammals.
+Tree height: Tree height is a continuous variable. Here, as tree height increases, the probability of a nest occurrence could increase because of increased distance between nests and browsing mammals (introduction section paragraph 3).  
 
-Acacia ant species: Acacia ant species is a categorical variable. 
+Acacia ant species: Acacia ant species is a categorical variable. Here, C. mimosoe and C. nigriceps could have a higher probability nest occurrence because they aggressively defend trees against mammalian and insect herbivores (introduction section paragraph 2).           
 
 ## d. Table of models
+
 | Model number | Tree Height | Ant Species | Interaction | 
 |--------------|:-----------:|:-----------:|:-----------:| 
 | 1            |      X      |      X      |     X       | 
@@ -222,6 +233,8 @@ Acacia ant species and tree height (cm) interact to predict the probability of n
 
 Furthermore, at a tree height of 600 cm, the probability of nest occurrence is 0.20 for Crematogaster sjostedti (95% CI: [0.00, 0.99]), 0.74 for Crematogaster mimosae (95% CI: [0.48, 0.90]), and 1.00 for Crematogaster nigriceps (95% CI: [1.00, 1.00]). Indicating higher probability of nest occurrence for Crematogaster nigriceps at the highest tree height measured, 600 cm. 
 
+Here, the higher probability of nest occurrence for acacia ant species C. mimosae and C. nigriceps could be explained because they are more aggressive defenders agains mammalian and insect herbivores, thereby defending nests against these predators and increasing probability of occurrence(Lujan E. et al. 2023, introduction section paragraph 2). 
+
 # Problem 3. Affective and exploratory visualizations
 
 ## a. Comparing visualizations
@@ -260,7 +273,7 @@ plot(my_data_lm)
 ```{r}
 #| label: Pearsons test for my data
 
-# running pearsons coefficient
+# running pearsons correlation
 # data$predictor, data$response
 cor.test(my_data_clean$amount_of_sleep, my_data_clean$coffee_oz,
          method = "pearson")
@@ -311,15 +324,15 @@ ggplot(my_data_clean,
 
 ## e. Write a caption
 
-**Figure 2: As amount of sleep increases, coffee consumption decreases.** Data my_data.xlsx (van der Poel, 2026). Line represents fitted line or linear model, demonstrating relationship between amount of sleep (hours) and coffee consumed (oz) (total n = 37). Meanwhile, points represent actual observations of coffee consumed on a given day given a certain amount of sleep. The amount of coffee consumed decreases as amount of sleep increases. Ribbon represents a 95% confidence interval. Colors represent different graph elements (brown: fitted line, seagreen: observations, khaki: confidence interval ribbon).
+**Figure 2: As amount of sleep increases, coffee consumption decreases.** Data from my_data.xlsx (van der Poel, 2026). Line represents predicted values following a linear model, demonstrating relationship between amount of sleep (hours) and coffee consumed (oz) (total n = 37). Meanwhile, points represent actual observations of coffee consumed on a given day given a certain amount of sleep. The amount of coffee consumed decreases as amount of sleep increases. Ribbon represents a 95% confidence interval. Colors represent different graph elements (brown: fitted line, seagreen: observations, khaki: confidence interval ribbon).
 
 ## f. Write about your results
 
-I found a weak negative relationship between amount of sleep and coffee consumed (Pearson's r = 0.32, t(35) = -2.0, p = 0.055, $\alpha$ = 0.05).
+As amount of sleep increases (hours), amount of coffee consumed decreases(oz) (total n = 37). After running a Pearsons correlation test, I found a weak negative relationship between amount of sleep and coffee consumed (Pearson's r = 0.32, t(35) = -2.0, p = 0.055, $\alpha$ = 0.05). 
 
 ## g. Sharing your affective visualization
 
-![]("affective_visualization1.jpg"){style="width: 500px; height: 800px; object-fit: cover;"}
+![]("affective_visualization1.jpg")
 
 
 
