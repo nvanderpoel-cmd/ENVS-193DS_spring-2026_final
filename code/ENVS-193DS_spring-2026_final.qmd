@@ -1,8 +1,13 @@
 ---
 title: "ENV S 193DS Final"
 author: "Niki van der Poel"
-format: pdf
 date: June 9 2026
+format:
+  pdf:
+    toc: true # use this to display a table of contents
+execute:
+  message: false # use this to make sure messages don't show up
+  warning: false # use this to make sure warnings don't show up
 ---
 
 [Github Repo](https://github.com/nvanderpoel-cmd/ENVS-193DS_spring-2026_final)
